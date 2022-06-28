@@ -1,0 +1,13 @@
+package com.example.demo.service;
+
+import com.example.demo.dto.NoteDTO;
+
+public interface NoteService {
+
+	NoteDTO save(NoteDTO dto, Long id);
+
+	void delete(Long id);
+
+	NoteDTO update(Long id);
+
+}

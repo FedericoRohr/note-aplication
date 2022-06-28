@@ -1,0 +1,15 @@
+package com.example.demo.mapper;
+
+import org.springframework.stereotype.Component;
+
+import com.example.demo.entity.CategoryEntity;
+
+@Component
+public class CategoryMapper {
+
+	public CategoryEntity categoryDTO2Entity;
+	
+	
+
+
+}

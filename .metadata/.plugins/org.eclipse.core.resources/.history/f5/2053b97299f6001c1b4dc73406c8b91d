@@ -1,0 +1,17 @@
+package com.example.demo.service.imp;
+
+import org.springframework.stereotype.Service;
+
+import com.example.demo.entity.CategoryEntity;
+import com.example.demo.service.CategoryService;
+
+@Service
+public class CategoryServiceImp implements CategoryService {
+
+	@Override
+	public CategoryEntity exist(String name) {
+		
+		return null;
+	}
+
+}

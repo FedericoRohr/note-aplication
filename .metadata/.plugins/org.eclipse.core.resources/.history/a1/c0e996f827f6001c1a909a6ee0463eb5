@@ -1,0 +1,37 @@
+package com.example.demo.entity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "notes")
+
+public class Note {
+@Id
+@GeneratedValue(strategy= GenerationType.SEQUENCE)
+private Long id;
+
+private String title;
+
+private String content;
+
+private List<>categories=new ArrayList<>();
+
+private boolean archived = Boolean.FALSE;
+
+private boolean deleted = Boolean.FALSE;
+
+private void addCategories(String categorie) {
+	categories.add(categorie);
+}
+
+private void removeCategories(String categorie) {
+	categories.add(categorie);
+}
+}
