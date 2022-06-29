@@ -1,0 +1,9 @@
+package com.example.demo.service;
+
+import com.example.demo.dtos.UserDTO;
+
+public interface UserService {
+
+	UserDTO save(UserDTO user);
+
+}

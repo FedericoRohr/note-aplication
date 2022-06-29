@@ -4,7 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.demo.entity.UserExpampleEntity;
+
+import com.example.demo.entity.UserEntity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +19,7 @@ public class NoteDTO {
 
 	private List<CategoryDTO>categories=new ArrayList<>();
 	
-	private UserExpampleEntity user;
+	private UserEntity user;
 	
 	private Long userid;
 	

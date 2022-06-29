@@ -8,3 +8,38 @@
 1656385313939	Rename type 'BasicNoteDTO'
 1656388137876	Delete element
 1656458629710	Delete element
+1656465933446	Delete element
+1656466123405	Rename package 'com.example.demo.dto'
+1656466137369	Rename package 'com.example.demo.dtos'
+1656468286865	Rename type 'nonexistentCategory'
+1656469524750	Delete element
+1656469851804	Delete element
+1656469856234	Delete element
+1656469860035	Delete element
+1656469863511	Delete element
+1656469866702	Delete element
+1656470165654	Delete element
+1656470384908	Rename package 'com.example.demo.exeption'
+1656470413709	Rename type 'RestExeptionHandler'
+1656472368775	Delete element
+1656475029919	Delete element
+1656475108650	Delete element
+1656475179126	Rename type 'UserRepository'
+1656476669513	Copy compilation unit
+1656476677422	Delete element
+1656476686242	Copy compilation unit
+1656476692330	Delete element
+1656476706024	Copy compilation unit
+1656476715167	Delete element
+1656476772338	Copy compilation unit
+1656476778269	Delete element
+1656476856736	Copy compilation unit
+1656476863591	Delete element
+1656476925309	Copy compilation unit
+1656476932463	Delete element
+1656476940840	Copy compilation unit
+1656476965469	Delete element
+1656477410486	Delete element
+1656477423792	Delete element
+1656511613597	Rename type 'UserExpampleEntity'
+1656511633351	Rename type 'UserRepositoryExample'

@@ -21,6 +21,7 @@ import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -48,7 +49,7 @@ private LocalDate lastEdited;
 
 @ManyToOne(fetch = FetchType.EAGER,cascade= CascadeType.PERSIST) /// buscar mejor tipo de cascada
 @JoinColumn(name = "user_id", insertable = false, updatable = false)
-private UserExpampleEntity user;
+private UserEntity user;
 
 @Column(name = "user_id", nullable = false)
 private Long userId;

@@ -1,0 +1,16 @@
+package com.example.demo.exception;
+
+public enum ErrorEnum {
+	NONEXISTENTCATEGORY
+	
+	private String message;
+
+    private ErrorEnum(String message) {
+        this.message = message;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+}

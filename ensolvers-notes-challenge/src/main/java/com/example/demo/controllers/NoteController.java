@@ -90,7 +90,7 @@ public class NoteController {
 	
 	
 	/**
-	 * delete category but persist in categories table
+	 * delete category in noteEntity but persist in categories table
 	 * 
 	*/
 	@DeleteMapping("{noteId}/user/{userId}/category")

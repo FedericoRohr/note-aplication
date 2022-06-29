@@ -1,0 +1,215 @@
+package com.example.demo.service.imp;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.example.demo.dto.CategoryDTO;
+import com.example.demo.dto.NoteBasicDTO;
+import com.example.demo.dto.NoteDTO;
+import com.example.demo.entity.CategoryEntity;
+import com.example.demo.entity.NoteEntity;
+import com.example.demo.entity.UserExpampleEntity;
+import com.example.demo.exception.ArchiveException;
+import com.example.demo.exception.ErrorEnums;
+import com.example.demo.exception.ParamNotFound;
+import com.example.demo.mapper.NoteMapper;
+import com.example.demo.repository.NoteRepository;
+import com.example.demo.repository.UserRepositoryExample;
+import com.example.demo.service.CategoryService;
+import com.example.demo.service.NoteService;
+
+@Component
+public class NoteServiceImp implements NoteService {
+	@Autowired
+	NoteMapper noteMapper;
+	@Autowired
+	NoteRepository noteRepository;
+	@Autowired
+	CategoryService categoryService;
+	/*@Autowired
+	UserRepositoryExample userRepository;*/
+
+	@Transactional
+	@Override
+	public NoteDTO save(NoteDTO dto, Long userId) {
+		this.checkUser(userId);
+		dto.setUserid(userId);
+		NoteEntity noteEntity = noteMapper.noteDTO2Entity(dto);
+		this.updateEditedDate(noteEntity);
+		noteEntity = noteRepository.save(noteEntity);
+		NoteDTO response = noteMapper.noteEntity2DTO(noteEntity);
+		return response;
+	}
+
+	@Transactional
+	@Override
+	public void delete(Long noteId, Long userId) {
+		NoteEntity noteEntity = this.getNoteById(noteId);
+		this.checkUserXNote(userId, noteEntity);
+		noteRepository.deleteById(noteId);
+	}
+
+	@Transactional
+	@Override
+	public void update(Long noteId, Long userId, NoteDTO dto){
+		NoteEntity noteEntity = this.getNoteById(noteId);
+		this.checkUserXNote(userId, noteEntity);
+		this.updateEditedDate(noteEntity);
+		noteRepository.save(noteMapper.update(noteEntity, dto));
+	}
+
+	@Transactional
+	@Override
+	public void archive(Long noteId, Long userId)throws ArchiveException {
+		NoteEntity noteEntity = this.getNoteById(noteId);
+		this.checkUserXNote(userId, noteEntity);
+		if (noteEntity.isArchived()) {
+			throw new ArchiveException(ErrorEnums.ARCHIVE.getMessage());
+		}
+		noteEntity.setArchived(true);
+		this.updateEditedDate(noteEntity);
+	}
+
+	@Transactional
+	@Override
+	public void unArchive(Long noteId, Long userId) throws ArchiveException {
+		NoteEntity noteEntity = this.getNoteById(noteId);
+		this.checkUserXNote(userId, noteEntity);
+		if (!noteEntity.isArchived()) {
+			throw new ArchiveException(ErrorEnums.UNARCHIVE.getMessage());
+		}
+		noteEntity.setArchived(false);
+		this.updateEditedDate(noteEntity);
+
+	}
+
+	@Override
+	public List<NoteBasicDTO> getAll(Long id) {
+		List<NoteEntity> notesEntity = noteRepository.findByUserIdAndArchivedFalse(id);
+		return noteMapper.noteEntity2BasicDTOlist(notesEntity);
+
+	}
+
+	@Override
+	public List<NoteBasicDTO> getAllArchive(Long id) {
+		List<NoteEntity> notesEntity = noteRepository.findByUserIdAndArchivedTrue(id);
+		return noteMapper.noteEntity2BasicDTOlist(notesEntity);
+	}
+
+	@Transactional
+	@Override
+	public void addCategory(Long noteId, Long userId, CategoryDTO category) {
+		CategoryEntity categoryEntity;
+		NoteEntity noteEntity = this.getNoteById(noteId);
+		this.checkUserXNote(userId, noteEntity);
+		try {
+			/// checks if exist to avoid duplicates in category table
+			categoryEntity = categoryService.exist(category.getName());
+			if (!noteEntity.getCategories().contains(categoryEntity)) {
+				this.addSave(noteEntity, categoryEntity);
+			}
+		} catch (RuntimeException e) {
+			categoryEntity = categoryService.saveAndReturnEntity(category);
+			this.addSave(noteEntity, categoryEntity);
+		}
+		finally {
+			this.updateEditedDate(noteEntity);
+		}
+	}
+	
+	/**
+	 * method to be used when the entity doesn´t have an id yet 
+	 */
+	@Transactional
+	@Override
+	public void addSimpleCategory(NoteEntity noteEntity,CategoryDTO category) {
+		 CategoryEntity categoryEntity;
+		try {
+			/// checks if exist to avoid duplicates in category table
+			categoryEntity = categoryService.exist(category.getName());
+			if (!noteEntity.getCategories().contains(categoryEntity)) {
+				this.addSave(noteEntity, categoryEntity);
+			}
+		} catch (RuntimeException e) {
+			categoryEntity = categoryService.saveAndReturnEntity(category);
+			this.addSave(noteEntity, categoryEntity);
+		}
+	}
+	
+	
+	
+
+	@Transactional
+	@Override
+	public void deleteCategory(Long noteId, Long userId, CategoryDTO category) {
+		NoteEntity noteEntity = this.getNoteById(noteId);
+		this.checkUserXNote(userId, noteEntity);
+		CategoryEntity categoryEntity = categoryService.exist(category.getName());
+		if (!noteEntity.getCategories().contains(categoryEntity)) {
+			throw new RuntimeException("note dont contains that category");
+		}
+		this.deleteSave(noteEntity, categoryEntity);
+		this.updateEditedDate(noteEntity);
+	}
+
+	@Override
+	public List<NoteBasicDTO> getAllByCategory(CategoryDTO category, Long userid) {
+		this.checkUser(userid);
+		CategoryEntity categoryEntity = categoryService.exist(category.getName());
+		List<NoteEntity> notes = noteRepository.findByUserId(userid);
+		List<NoteBasicDTO> basics = new ArrayList<>();
+		for (NoteEntity n : notes) {
+			if (n.getCategories().contains(categoryEntity)) {
+				basics.add(noteMapper.noteEntity2BasicDTO(n));
+			}
+		}
+		return basics;
+	}
+
+	// private methods
+
+	private void checkUserXNote(Long userId, NoteEntity note) throws ParamNotFound {
+		this.checkUser(userId);
+		if (!note.getUserId().equals(userId)) {
+			throw new ParamNotFound(ErrorEnums.USERNOTENOTFOUND.getMessage());
+		}
+	}
+
+	private void checkUser(Long userId) throws ParamNotFound {
+		Optional<UserExpampleEntity> user = userRepository.findById(userId);
+		if (!user.isPresent()) {
+			throw new ParamNotFound(ErrorEnums.USERIDNOTFOUND.getMessage());
+		}
+	}
+
+	private NoteEntity getNoteById(Long noteId) throws ParamNotFound {
+		Optional<NoteEntity> note = noteRepository.findById(noteId);
+		if (!note.isPresent()) {
+			throw new ParamNotFound(ErrorEnums.NOTEIDNOTFOUND.getMessage());
+		}
+		return note.get();
+
+	}
+
+	private void addSave(NoteEntity note, CategoryEntity category) {
+		note.addCategories(category);
+		noteRepository.save(note);
+	}
+
+	private void deleteSave(NoteEntity note, CategoryEntity category) {
+		note.removeCategories(category);
+		noteRepository.save(note);
+	}
+	
+	private void updateEditedDate(NoteEntity note) {
+		note.setLastEdited(LocalDate.now());
+	}
+
+}

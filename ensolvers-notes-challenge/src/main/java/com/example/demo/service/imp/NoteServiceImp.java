@@ -15,7 +15,10 @@ import com.example.demo.dto.NoteBasicDTO;
 import com.example.demo.dto.NoteDTO;
 import com.example.demo.entity.CategoryEntity;
 import com.example.demo.entity.NoteEntity;
-import com.example.demo.entity.UserExpampleEntity;
+import com.example.demo.entity.UserEntity;
+import com.example.demo.exception.ArchiveException;
+import com.example.demo.exception.ErrorEnums;
+import com.example.demo.exception.ParamNotFound;
 import com.example.demo.mapper.NoteMapper;
 import com.example.demo.repository.NoteRepository;
 import com.example.demo.repository.UserRepository;
@@ -36,6 +39,7 @@ public class NoteServiceImp implements NoteService {
 	@Transactional
 	@Override
 	public NoteDTO save(NoteDTO dto, Long userId) {
+		this.checkUser(userId);
 		dto.setUserid(userId);
 		NoteEntity noteEntity = noteMapper.noteDTO2Entity(dto);
 		this.updateEditedDate(noteEntity);
@@ -54,7 +58,7 @@ public class NoteServiceImp implements NoteService {
 
 	@Transactional
 	@Override
-	public void update(Long noteId, Long userId, NoteDTO dto) throws RuntimeException {
+	public void update(Long noteId, Long userId, NoteDTO dto){
 		NoteEntity noteEntity = this.getNoteById(noteId);
 		this.checkUserXNote(userId, noteEntity);
 		this.updateEditedDate(noteEntity);
@@ -63,11 +67,11 @@ public class NoteServiceImp implements NoteService {
 
 	@Transactional
 	@Override
-	public void archive(Long noteId, Long userId) throws RuntimeException {
+	public void archive(Long noteId, Long userId)throws ArchiveException {
 		NoteEntity noteEntity = this.getNoteById(noteId);
 		this.checkUserXNote(userId, noteEntity);
 		if (noteEntity.isArchived()) {
-			throw new RuntimeException("Alredy archive");
+			throw new ArchiveException(ErrorEnums.ARCHIVE.getMessage());
 		}
 		noteEntity.setArchived(true);
 		this.updateEditedDate(noteEntity);
@@ -75,11 +79,11 @@ public class NoteServiceImp implements NoteService {
 
 	@Transactional
 	@Override
-	public void unArchive(Long noteId, Long userId) throws RuntimeException {
+	public void unArchive(Long noteId, Long userId) throws ArchiveException {
 		NoteEntity noteEntity = this.getNoteById(noteId);
 		this.checkUserXNote(userId, noteEntity);
 		if (!noteEntity.isArchived()) {
-			throw new RuntimeException("Alredy unArchive");
+			throw new ArchiveException(ErrorEnums.UNARCHIVE.getMessage());
 		}
 		noteEntity.setArchived(false);
 		this.updateEditedDate(noteEntity);
@@ -121,7 +125,7 @@ public class NoteServiceImp implements NoteService {
 	}
 	
 	/**
-	 * method to be used when the entity doesn´t have an id yet (in save method) 
+	 * method to be used when the entity doesn´t have an id yet 
 	 */
 	@Transactional
 	@Override
@@ -171,24 +175,24 @@ public class NoteServiceImp implements NoteService {
 
 	// private methods
 
-	private void checkUserXNote(Long userId, NoteEntity note) throws RuntimeException {
+	private void checkUserXNote(Long userId, NoteEntity note) throws ParamNotFound {
 		this.checkUser(userId);
 		if (!note.getUserId().equals(userId)) {
-			throw new RuntimeException("user dont have that note");
+			throw new ParamNotFound(ErrorEnums.USERNOTENOTFOUND.getMessage());
 		}
 	}
 
-	private void checkUser(Long userId) throws RuntimeException {
-		Optional<UserExpampleEntity> user = userRepository.findById(userId);
+	private void checkUser(Long userId) throws ParamNotFound {
+		Optional<UserEntity> user = userRepository.findById(userId);
 		if (!user.isPresent()) {
-			throw new RuntimeException("id de usuario invalido");
+			throw new ParamNotFound(ErrorEnums.USERIDNOTFOUND.getMessage());
 		}
 	}
 
-	private NoteEntity getNoteById(Long noteId) throws RuntimeException {
+	private NoteEntity getNoteById(Long noteId) throws ParamNotFound {
 		Optional<NoteEntity> note = noteRepository.findById(noteId);
 		if (!note.isPresent()) {
-			throw new RuntimeException("note id invalido");
+			throw new ParamNotFound(ErrorEnums.NOTEIDNOTFOUND.getMessage());
 		}
 		return note.get();
 
