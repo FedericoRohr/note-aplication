@@ -1,9 +1,5 @@
 package com.example.demo.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.example.demo.entity.NoteEntity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +9,5 @@ public class CategoryDTO {
 	
 	private String name;
 	
-	private List<NoteEntity>notes= new ArrayList<>();
 
 }

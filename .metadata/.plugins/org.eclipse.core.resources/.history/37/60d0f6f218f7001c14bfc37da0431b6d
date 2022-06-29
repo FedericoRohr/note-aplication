@@ -1,0 +1,168 @@
+package com.example.demo.service.imp;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.example.demo.dto.CategoryDTO;
+import com.example.demo.dto.NoteBasicDTO;
+import com.example.demo.dto.NoteDTO;
+import com.example.demo.entity.CategoryEntity;
+import com.example.demo.entity.NoteEntity;
+import com.example.demo.entity.UserExpampleEntity;
+import com.example.demo.mapper.NoteMapper;
+import com.example.demo.repository.NoteRepository;
+import com.example.demo.repository.UserRepository;
+import com.example.demo.service.CategoryService;
+import com.example.demo.service.NoteService;
+
+@Component
+public class NoteServiceImp implements NoteService {
+	@Autowired
+	NoteMapper noteMapper;
+	@Autowired
+	NoteRepository noteRepository;
+	@Autowired
+	CategoryService categoryService;
+	@Autowired
+	UserRepository userRepository;
+    
+	@Transactional
+	@Override
+	public NoteDTO save(NoteDTO dto, Long id) {
+		dto.setUserid(id);
+		NoteEntity entity= noteMapper.noteDTO2Entity(dto);
+		entity=noteRepository.save(entity);
+		NoteDTO response=noteMapper.noteEntity2DTO(entity);
+		return response;
+	}
+	@Transactional
+	@Override
+	public void delete(Long id) {
+			noteRepository.deleteById(id);
+		}
+	@Transactional
+	@Override
+	public void update(Long noteId, NoteDTO dto) throws Error  {
+		NoteEntity noteEntity= this.getNoteById(noteId);
+		 noteRepository.save(noteMapper.update(noteEntity,dto));
+		}
+	
+	@Transactional
+	@Override
+	public void archive(Long noteId) throws Error {
+		NoteEntity noteEntity= this.getNoteById(noteId);
+		 if(noteEntity.isArchived()) {
+			 throw new RuntimeException("Alredy archive");
+		 }
+		 noteEntity.setArchived(true);
+	}
+	@Transactional
+	@Override
+	public void unArchive(Long noteId) throws Error {
+		NoteEntity noteEntity= this.getNoteById(noteId);
+		 if(!noteEntity.isArchived()) {
+			 throw new RuntimeException("Alredy unArchive");
+		 }
+		 noteEntity.setArchived(false);
+		
+		
+	}
+	
+	
+	@Override
+	public List<NoteBasicDTO> getAll(Long id) {
+		List<NoteEntity>notesEntity= noteRepository.findByUserIdAndArchivedFalse(id);
+		return noteMapper.noteEntity2BasicDTOlist(notesEntity);
+		 
+	}
+	@Override
+	public List<NoteBasicDTO> getAllArchive(Long id) {
+		List<NoteEntity>notesEntity= noteRepository.findByUserIdAndArchivedTrue(id);
+		return noteMapper.noteEntity2BasicDTOlist(notesEntity);
+	}
+	@Override
+	public void addCategory(Long noteId, CategoryDTO category) {
+		CategoryEntity categoryEntity;
+		NoteEntity noteEntity= this.getNoteById(noteId);;
+		 try {
+			/// checks if exist to avoid duplicates in category table
+			  categoryEntity= categoryService.exist(category.getName());
+			 if(!noteEntity.getCategories().contains(categoryEntity)) {
+					this.addSafe(noteEntity, categoryEntity);
+				}
+		 }catch(RuntimeException e) {
+			 categoryEntity =categoryService.saveAndReturnEntity(category);
+				this.addSafe(noteEntity, categoryEntity);
+		 }
+		}	
+	
+
+	
+	@Override
+	public void deleteCategory(Long noteId, CategoryDTO category) {
+		 NoteEntity noteEntity= this.getNoteById(noteId);
+		 CategoryEntity categoryEntity= categoryService.exist(category.getName()); 
+		 if(!noteEntity.getCategories().contains(categoryEntity)) {
+			 throw new RuntimeException("note dont contains that category");
+			}
+		 this.deleteSafe(noteEntity, categoryEntity);
+		}
+	
+	
+	@Override
+	public List<NoteBasicDTO> getAllByCategory(CategoryDTO category) {
+		CategoryEntity categoryEntity= categoryService.exist(category.getName());
+		List<NoteEntity>notes =noteRepository.findAll();
+		List<NoteBasicDTO>basics= new ArrayList<>();
+		for(NoteEntity n :notes) {
+			if(n.getCategories().contains(categoryEntity)) {
+				basics.add(noteMapper.noteEntity2BasicDTO(n));
+			}
+		}return basics;
+	}
+	
+	    
+ 
+	/// private chek si coinciden solo tira expecion
+	
+	
+	// private methods
+	
+	private void checkUser(Long userId, NoteEntity note)throws RuntimeException {
+		Optional<UserExpampleEntity>user= userRepository.findById(userId);
+		 if(!user.isPresent()) {
+			 throw new RuntimeException("id de usuario invalido");
+		 }
+		if(!note.getUserId().equals(userId)) {
+			throw new RuntimeException("user dont have that note");
+		}
+	}
+	
+	private NoteEntity getNoteById(Long noteId)throws RuntimeException{
+		Optional<NoteEntity>note= noteRepository.findById(noteId);
+		 if(!note.isPresent()) {
+			 throw new RuntimeException("id invalido");
+		 }
+		 return note.get();
+		
+	}
+	
+	private void addSafe(NoteEntity note, CategoryEntity category) {
+		note.addCategories(category);
+		noteRepository.save(note);
+	}
+	
+	private void deleteSafe(NoteEntity note, CategoryEntity category) {
+		note.removeCategories(category);
+		noteRepository.save(note);
+	}
+	
+	
+
+}

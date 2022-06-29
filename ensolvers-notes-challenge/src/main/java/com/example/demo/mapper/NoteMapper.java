@@ -1,30 +1,41 @@
 package com.example.demo.mapper;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.example.demo.dto.CategoryDTO;
 import com.example.demo.dto.NoteBasicDTO;
 import com.example.demo.dto.NoteDTO;
 import com.example.demo.entity.NoteEntity;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.service.NoteService;
 
 @Component
 public class NoteMapper {
 	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	CategoryMapper categoryMapper;
+	@Autowired
+	NoteService noteService;
 
 	public NoteEntity noteDTO2Entity(NoteDTO dto) {
+		List<CategoryDTO> categories = dto.getCategories();
 		NoteEntity entity = new NoteEntity();
-		/// entity.setCategories(dto.getCategories());
+
 		entity.setContent(dto.getContent());
 		entity.setId(dto.getId());
 		entity.setLastEdited(dto.getLastedited());
 		entity.setTitle(dto.getTitle());
 		entity.setUser(userRepository.getReferenceById(dto.getUserid()));
 		entity.setUserId(dto.getUserid());
+        for(CategoryDTO c : categories) {
+        	noteService.addSimpleCategory(entity, c);
+        }
 		return entity;
 	}
 
@@ -37,12 +48,11 @@ public class NoteMapper {
 		dto.setTitle(entity.getTitle());
 		dto.setUser(entity.getUser());
 		dto.setUserid(entity.getUserId());
-		/// dto.setCategories(entity.getCategories());
+		dto.setCategories(categoryMapper.categoryListEntity2DTO(entity.getCategories()));
 		return dto;
 	}
 
 	public NoteEntity update(NoteEntity entity, NoteDTO dto) {
-		/// entity.setCategories(null);
 		if (dto.getTitle() != null) {
 			entity.setTitle(dto.getTitle());
 		}
@@ -59,14 +69,14 @@ public class NoteMapper {
 		}
 		return dtoList;
 	}
-	
-     public NoteBasicDTO noteEntity2BasicDTO(NoteEntity entity) {
-    	 NoteBasicDTO dto = new NoteBasicDTO();
-    	 dto.setId(entity.getId());
-    	 dto.setTitle(entity.getTitle());
-    	 dto.setContent(entity.getContent());
-    	 dto.setLastedited(entity.getLastEdited());
-    	 return dto; 	 
-     }
+
+	public NoteBasicDTO noteEntity2BasicDTO(NoteEntity entity) {
+		NoteBasicDTO dto = new NoteBasicDTO();
+		dto.setId(entity.getId());
+		dto.setTitle(entity.getTitle());
+		dto.setContent(entity.getContent());
+		dto.setLastedited(entity.getLastEdited());
+		return dto;
+	}
 
 }

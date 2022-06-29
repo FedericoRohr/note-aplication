@@ -5,24 +5,32 @@ import java.util.List;
 import com.example.demo.dto.CategoryDTO;
 import com.example.demo.dto.NoteBasicDTO;
 import com.example.demo.dto.NoteDTO;
+import com.example.demo.entity.NoteEntity;
 
 public interface NoteService {
 
-	NoteDTO save(NoteDTO dto, Long id);
+	NoteDTO save(NoteDTO dto, Long userId);
 
-	void delete(Long id);
+	void delete(Long noteId, Long userId); 
 
-	void update(Long id, NoteDTO dto);
+	void update(Long noteId, Long userId, NoteDTO dto);
 
-	void archive(Long id);
+	void archive(Long noteId, Long userId);
 
-	void unArchive(Long id);
+	void unArchive(Long noteId, Long userId);
 
-	List<NoteBasicDTO> getAll(Long id);
+	List<NoteBasicDTO> getAll(Long userId);
 
-	List<NoteBasicDTO> getAllArchive(Long id);
+	List<NoteBasicDTO> getAllArchive(Long userId);
 
-	void addCategory(Long userId, CategoryDTO category);
+	void addCategory(Long userId, Long noteId, CategoryDTO category);
+
+	void deleteCategory(Long noteId, Long userId, CategoryDTO category);
+
+
+	List<NoteBasicDTO> getAllByCategory(CategoryDTO category, Long userId);
+
+	void addSimpleCategory(NoteEntity noteEntity, CategoryDTO category);
 
 	
 

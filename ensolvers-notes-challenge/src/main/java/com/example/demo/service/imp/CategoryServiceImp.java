@@ -19,12 +19,13 @@ CategoryRepository categoryRepository;
 CategoryMapper categoryMapper;
 
 	@Override
-	public CategoryEntity exist(String name) {
+	public CategoryEntity exist(String name) throws RuntimeException{
 		CategoryEntity entity = null;
 		Optional<CategoryEntity>category= categoryRepository.findByName(name);
-		 if(category.isPresent()) {
-			 entity=category.get();
+		 if(!category.isPresent()) {
+			 throw new RuntimeException("category dont exist");
 		 }
+		 entity=category.get();
 		return entity;
 	}
 

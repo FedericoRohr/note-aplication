@@ -26,42 +26,37 @@ public class NoteController {
 	NoteService noteService;
 	
     
-	@PostMapping("/user/{id}")
-	public ResponseEntity<NoteDTO> save(@RequestBody NoteDTO dto, @PathVariable Long id) {
-		NoteDTO response = noteService.save(dto, id);
+	@PostMapping("/user/{userId}")
+	public ResponseEntity<NoteDTO> save(@RequestBody NoteDTO dto, @PathVariable Long userId) {
+		NoteDTO response = noteService.save(dto, userId);
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id) {
-		/// TODO: implementar metodo que cheque que ambos id coincidan y si no tira expecion
-		noteService.delete(id);
+	@DeleteMapping("/{noteId}/user/{userId}")
+	public ResponseEntity<Void> delete(@PathVariable Long noteId, @PathVariable Long userId) {
+		noteService.delete(noteId,userId);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 	
 	/**
 	 * update only title or content or categories
 	*/
-	@PutMapping("/{id}")
-	public ResponseEntity<Void>update(@PathVariable Long id, @RequestBody NoteDTO dto ){
-		/// TODO: implements UserID
-		/// TODO: check user have that note ,throws exception
-		noteService.update(id,dto);
-		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-	}
-	@PutMapping("archive/{id}")
-	public ResponseEntity<Void>archive(@PathVariable Long id){
-		/// TODO: implements UserID
-		/// TODO: check user have that note ,throws exception
-		noteService.archive(id);
+	@PutMapping("/{noteId}/user/{userId}")
+	public ResponseEntity<Void>update(@PathVariable Long noteId, @PathVariable Long userId, @RequestBody NoteDTO dto ){
+	    noteService.update(noteId, userId ,dto);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 	
-	@PutMapping("unarchive/{id}")
-	public ResponseEntity<Void>unArchive(@PathVariable Long id){
-		/// TODO: implements UserID
-		/// TODO: check user have that note ,throws exception
-		noteService.unArchive(id);
+	
+	@PutMapping("/archive/{noteId}/user/{userId}")
+	public ResponseEntity<Void>archive(@PathVariable Long noteId,@PathVariable Long userId ){
+		noteService.archive(noteId,userId);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	}
+	
+	@PutMapping("/unarchive/{noteId}/user/{userId}")
+	public ResponseEntity<Void>unArchive(@PathVariable Long noteId,@PathVariable Long userId ){
+		noteService.unArchive(noteId,userId);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 	
@@ -85,15 +80,33 @@ public class NoteController {
 		return ResponseEntity.ok().body(notes);
 	}
 	
-	@PostMapping("/user/{userId}/note/{noteId}")
-	public  ResponseEntity<Void>addCategory(@PathVariable Long userId,
-			@PathVariable Long noteId, @RequestBody CategoryDTO category ){
-		/// TODO: check user have that note ,throws exception
-		noteService.addCategory(noteId,category);
+	@PostMapping("/{noteId}/user/{userId}/category")
+	public  ResponseEntity<Void>addCategory(@PathVariable Long noteId,
+			@PathVariable Long userId , @RequestBody CategoryDTO category ){
+		noteService.addCategory(noteId,userId,category);
 	 return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		
 	}
 	
+	
+	/**
+	 * delete category but persist in categories table
+	 * 
+	*/
+	@DeleteMapping("{noteId}/user/{userId}/category")
+	public  ResponseEntity<Void>deleteCategory(@PathVariable Long noteId,
+			@PathVariable Long userId,@RequestBody CategoryDTO category ){
+		noteService.deleteCategory(noteId,userId,category);
+	 return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		
+	}
+	
+	
+	@GetMapping("/{userId}/category")
+	public ResponseEntity<List<NoteBasicDTO>>getAllBycategory(@PathVariable Long userId,@RequestBody CategoryDTO category){
+		List<NoteBasicDTO>notes=noteService.getAllByCategory(category,userId);
+		return ResponseEntity.ok().body(notes);
+	}
 	
 	
 	
