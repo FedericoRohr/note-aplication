@@ -3,30 +3,29 @@ package com.example.demo.service.imp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.dto.UserDTO;
-import com.example.demo.entity.UserEntity;
-import com.example.demo.mapper.UserMapper;
-import com.example.demo.repository.UserRepository;
+import com.example.demo.auth.entity.UserEntity;
+import com.example.demo.auth.repository.UserRepository;
+import com.example.demo.auth.service.JwtUtils;
 import com.example.demo.service.UserService;
+
 @Service
-public class UserServiceImp implements UserService {
-
-@Autowired
-UserMapper userMapper;
-@Autowired
-UserRepository userRepository;
-
-	  
+public class UserServiceImp implements UserService{
+	@Autowired
+	JwtUtils jwtUtils;
+	
+	@Autowired
+	UserRepository userRepository;
+	
 	@Override
-	public UserDTO save(UserDTO user) {
-		UserEntity entity =  userMapper.UserDTO2Entity(user);
-		entity=userRepository.save(entity);
-		UserDTO response = userMapper.UserEntity2DTO(entity);
-		return response;
+	public Long getUserId(String auth) {
+     return getUserByAuth(auth).getId();
 	}
 	
+	public UserEntity getUserByAuth(String auth) {
+		String jwt = auth.substring(7);
+		String userName = jwtUtils.extractUsername(jwt);
+		return userRepository.findByUserName(userName);
+		
+	}
 
-
-	
-	
 }

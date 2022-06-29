@@ -3,9 +3,12 @@ package com.example.demo.exception;
 public enum ErrorEnums {
     USERNOTENOTFOUND("the user doesn´t have that note"),
     NOTEIDNOTFOUND("Incorrect note id"),
-    USERIDNOTFOUND("Incorrect user id"),
+    CATEGORYNOTFOUND("Category doesn´t exist"),
 	ARCHIVE("Alredy archived"),
-	UNARCHIVE("Alredy unarchived");
+	UNARCHIVE("Alredy unarchived"),
+	USERNAMENOTFOUND("nonexistent user"),
+	USERNAMEEXIST("User with that userName already exists"),
+	WRONGUSERPASSWORD("user or password wrong");
 
     private String message;
 

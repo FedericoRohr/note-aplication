@@ -1,0 +1,10 @@
+package com.example.demo.service.imp;
+
+import org.springframework.stereotype.Service;
+
+import com.example.demo.service.UserService;
+
+@Service
+public class UserServiceImp implements UserService{
+
+}

@@ -2,6 +2,8 @@ package com.example.demo.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.example.demo.dto.CategoryDTO;
 import com.example.demo.dto.NoteBasicDTO;
 import com.example.demo.dto.NoteDTO;
@@ -31,6 +33,8 @@ public interface NoteService {
 	List<NoteBasicDTO> getAllByCategory(CategoryDTO category, Long userId);
 
 	void addSimpleCategory(NoteEntity noteEntity, CategoryDTO category);
+
+	
 
 	
 

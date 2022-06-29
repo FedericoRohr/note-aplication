@@ -10,18 +10,18 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.example.demo.auth.entity.UserEntity;
+import com.example.demo.auth.repository.UserRepository;
 import com.example.demo.dto.CategoryDTO;
 import com.example.demo.dto.NoteBasicDTO;
 import com.example.demo.dto.NoteDTO;
 import com.example.demo.entity.CategoryEntity;
 import com.example.demo.entity.NoteEntity;
-import com.example.demo.entity.UserEntity;
 import com.example.demo.exception.ArchiveException;
 import com.example.demo.exception.ErrorEnums;
 import com.example.demo.exception.ParamNotFound;
 import com.example.demo.mapper.NoteMapper;
 import com.example.demo.repository.NoteRepository;
-import com.example.demo.repository.UserRepository;
 import com.example.demo.service.CategoryService;
 import com.example.demo.service.NoteService;
 
@@ -39,7 +39,6 @@ public class NoteServiceImp implements NoteService {
 	@Transactional
 	@Override
 	public NoteDTO save(NoteDTO dto, Long userId) {
-		this.checkUser(userId);
 		dto.setUserid(userId);
 		NoteEntity noteEntity = noteMapper.noteDTO2Entity(dto);
 		this.updateEditedDate(noteEntity);
@@ -161,7 +160,6 @@ public class NoteServiceImp implements NoteService {
 
 	@Override
 	public List<NoteBasicDTO> getAllByCategory(CategoryDTO category, Long userid) {
-		this.checkUser(userid);
 		CategoryEntity categoryEntity = categoryService.exist(category.getName());
 		List<NoteEntity> notes = noteRepository.findByUserId(userid);
 		List<NoteBasicDTO> basics = new ArrayList<>();
@@ -176,18 +174,12 @@ public class NoteServiceImp implements NoteService {
 	// private methods
 
 	private void checkUserXNote(Long userId, NoteEntity note) throws ParamNotFound {
-		this.checkUser(userId);
 		if (!note.getUserId().equals(userId)) {
 			throw new ParamNotFound(ErrorEnums.USERNOTENOTFOUND.getMessage());
 		}
 	}
 
-	private void checkUser(Long userId) throws ParamNotFound {
-		Optional<UserEntity> user = userRepository.findById(userId);
-		if (!user.isPresent()) {
-			throw new ParamNotFound(ErrorEnums.USERIDNOTFOUND.getMessage());
-		}
-	}
+	
 
 	private NoteEntity getNoteById(Long noteId) throws ParamNotFound {
 		Optional<NoteEntity> note = noteRepository.findById(noteId);

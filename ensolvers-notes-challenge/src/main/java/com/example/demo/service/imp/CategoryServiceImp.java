@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.CategoryDTO;
 import com.example.demo.entity.CategoryEntity;
+import com.example.demo.exception.ErrorEnums;
+import com.example.demo.exception.ParamNotFound;
 import com.example.demo.mapper.CategoryMapper;
 import com.example.demo.repository.CategoryRepository;
 import com.example.demo.service.CategoryService;
@@ -19,11 +21,11 @@ CategoryRepository categoryRepository;
 CategoryMapper categoryMapper;
 
 	@Override
-	public CategoryEntity exist(String name) throws RuntimeException{
+	public CategoryEntity exist(String name) throws ParamNotFound{
 		CategoryEntity entity = null;
 		Optional<CategoryEntity>category= categoryRepository.findByName(name);
 		 if(!category.isPresent()) {
-			 throw new RuntimeException("category dont exist");
+			 throw new ParamNotFound(ErrorEnums.CATEGORYNOTFOUND.getMessage());
 		 }
 		 entity=category.get();
 		return entity;

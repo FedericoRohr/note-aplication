@@ -4,8 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-
-import com.example.demo.entity.UserEntity;
+import com.example.demo.auth.entity.UserEntity;
 
 import lombok.Getter;
 import lombok.Setter;

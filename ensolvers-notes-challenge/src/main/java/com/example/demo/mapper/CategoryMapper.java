@@ -14,14 +14,12 @@ public class CategoryMapper {
 
 	public CategoryEntity categoryDTO2Entity(CategoryDTO category) {
 		CategoryEntity entity = new CategoryEntity();
-		entity.setId(category.getId());
 		entity.setName(category.getName());
 		return entity;
 	}
 
 	public CategoryDTO categoryEntity2DTO(CategoryEntity entity) {
 		CategoryDTO dto = new CategoryDTO();
-		dto.setId(entity.getId());
 		dto.setName(entity.getName());
 		return dto;
 	}

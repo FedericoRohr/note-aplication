@@ -2,6 +2,9 @@ package com.example.demo.controllers;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,50 +15,61 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.dto.CategoryDTO;
 import com.example.demo.dto.NoteBasicDTO;
 import com.example.demo.dto.NoteDTO;
 import com.example.demo.service.NoteService;
+import com.example.demo.service.UserService;
 
 @Controller
 @RequestMapping("notes")
 public class NoteController {
 	@Autowired
 	NoteService noteService;
+	@Autowired
+	UserService userService;
+	
 	
     
-	@PostMapping("/user/{userId}")
-	public ResponseEntity<NoteDTO> save(@RequestBody NoteDTO dto, @PathVariable Long userId) {
+	@PostMapping("/user")
+	public ResponseEntity<NoteDTO> save(@RequestBody NoteDTO dto, 
+			@RequestHeader(value="Authorization") String auth) {
+		Long userId =userService.getUserId(auth);
 		NoteDTO response = noteService.save(dto, userId);
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
-	@DeleteMapping("/{noteId}/user/{userId}")
-	public ResponseEntity<Void> delete(@PathVariable Long noteId, @PathVariable Long userId) {
+	@DeleteMapping("/{noteId}/user")
+	public ResponseEntity<Void> delete(@PathVariable Long noteId, @RequestHeader(value="Authorization") String auth) {
+		Long userId =userService.getUserId(auth);
 		noteService.delete(noteId,userId);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 	
 	/**
-	 * update only title or content or categories
+	 * update only title or content no categories
 	*/
-	@PutMapping("/{noteId}/user/{userId}")
-	public ResponseEntity<Void>update(@PathVariable Long noteId, @PathVariable Long userId, @RequestBody NoteDTO dto ){
-	    noteService.update(noteId, userId ,dto);
+	@PutMapping("/{noteId}/user")
+	public ResponseEntity<Void>update(@PathVariable Long noteId, @RequestHeader(value="Authorization") String auth, @RequestBody NoteDTO dto ){
+		Long userId =userService.getUserId(auth);
+		noteService.update(noteId, userId ,dto);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 	
 	
-	@PutMapping("/archive/{noteId}/user/{userId}")
-	public ResponseEntity<Void>archive(@PathVariable Long noteId,@PathVariable Long userId ){
+	@PutMapping("/archive/{noteId}")
+	public ResponseEntity<Void>archive(@PathVariable Long noteId,@RequestHeader(value="Authorization") String auth){
+		Long userId =userService.getUserId(auth);
 		noteService.archive(noteId,userId);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 	
-	@PutMapping("/unarchive/{noteId}/user/{userId}")
-	public ResponseEntity<Void>unArchive(@PathVariable Long noteId,@PathVariable Long userId ){
+	@PutMapping("/unarchive/{noteId}")
+	public ResponseEntity<Void>unArchive(@PathVariable Long noteId,@RequestHeader(value="Authorization") String auth ){
+		Long userId =userService.getUserId(auth);
 		noteService.unArchive(noteId,userId);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
@@ -64,9 +78,10 @@ public class NoteController {
 	 * get all unarchive
 	 * shows basic dto because NoteDTO have unnecessary information
 	*/
-	@GetMapping("/{id}")
-	public ResponseEntity<List<NoteBasicDTO>>getAll(@PathVariable Long id){
-		List<NoteBasicDTO>notes=noteService.getAll(id);
+	@GetMapping("/user")
+	public ResponseEntity<List<NoteBasicDTO>>getAll(@RequestHeader(value="Authorization") String auth ){
+		Long userId =userService.getUserId(auth);
+		List<NoteBasicDTO>notes=noteService.getAll(userId);
 		return ResponseEntity.ok().body(notes);
 	}
 	
@@ -74,36 +89,41 @@ public class NoteController {
 	 * get all archive
 	 * shows basic dto because NoteDTO have unnecessary information
 	*/
-	@GetMapping("/archive/{id}")
-	public ResponseEntity<List<NoteBasicDTO>>getAllArchive(@PathVariable Long id){
-		List<NoteBasicDTO>notes=noteService.getAllArchive(id);
+	@GetMapping("/user/archive")
+	public ResponseEntity<List<NoteBasicDTO>>getAllArchive(@RequestHeader(value="Authorization") String auth){
+		Long userId =userService.getUserId(auth);
+		List<NoteBasicDTO>notes=noteService.getAllArchive(userId);
 		return ResponseEntity.ok().body(notes);
 	}
 	
-	@PostMapping("/{noteId}/user/{userId}/category")
+	@PostMapping("/{noteId}/category")
 	public  ResponseEntity<Void>addCategory(@PathVariable Long noteId,
-			@PathVariable Long userId , @RequestBody CategoryDTO category ){
+			@RequestHeader(value="Authorization") String auth , @RequestBody @Valid CategoryDTO category ){
+		Long userId =userService.getUserId(auth);
 		noteService.addCategory(noteId,userId,category);
-	 return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	 return ResponseEntity.status(HttpStatus.OK).build();
 		
 	}
+	
 	
 	
 	/**
 	 * delete category in noteEntity but persist in categories table
 	 * 
 	*/
-	@DeleteMapping("{noteId}/user/{userId}/category")
+	@DeleteMapping("{noteId}/category")
 	public  ResponseEntity<Void>deleteCategory(@PathVariable Long noteId,
-			@PathVariable Long userId,@RequestBody CategoryDTO category ){
+			@RequestHeader(value="Authorization") String auth,@RequestBody @Valid CategoryDTO category ){
+		Long userId =userService.getUserId(auth);
 		noteService.deleteCategory(noteId,userId,category);
-	 return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	 return ResponseEntity.status(HttpStatus.OK).build();
 		
 	}
 	
 	
-	@GetMapping("/{userId}/category")
-	public ResponseEntity<List<NoteBasicDTO>>getAllBycategory(@PathVariable Long userId,@RequestBody CategoryDTO category){
+	@GetMapping("category")
+	public ResponseEntity<List<NoteBasicDTO>>getAllBycategory(@RequestHeader(value="Authorization") String auth,@RequestBody CategoryDTO category){
+		Long userId =userService.getUserId(auth);
 		List<NoteBasicDTO>notes=noteService.getAllByCategory(category,userId);
 		return ResponseEntity.ok().body(notes);
 	}

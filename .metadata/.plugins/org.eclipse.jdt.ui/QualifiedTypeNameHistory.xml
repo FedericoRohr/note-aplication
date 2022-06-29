@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="javax.persistence.Id"/>
-    <fullyQualifiedTypeName name="javax.annotation.Generated"/>
-    <fullyQualifiedTypeName name="javax.persistence.GeneratedValue"/>
-    <fullyQualifiedTypeName name="java.util.Locale.Category"/>
-    <fullyQualifiedTypeName name="javax.persistence.Entity"/>
-    <fullyQualifiedTypeName name="javax.persistence.Table"/>
     <fullyQualifiedTypeName name="org.springframework.stereotype.Controller"/>
     <fullyQualifiedTypeName name="com.example.demo.dto.UserDTO"/>
-    <fullyQualifiedTypeName name="com.example.demo.service.UserService"/>
     <fullyQualifiedTypeName name="org.springframework.data.jpa.repository.JpaRepository"/>
     <fullyQualifiedTypeName name="com.example.demo.mapper.UserMapper"/>
     <fullyQualifiedTypeName name="com.example.demo.service.NoteService"/>
@@ -20,7 +13,6 @@
     <fullyQualifiedTypeName name="javax.transaction.Transactional"/>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PutMapping"/>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.DeleteMapping"/>
-    <fullyQualifiedTypeName name="java.util.Optional"/>
     <fullyQualifiedTypeName name="javax.management.RuntimeErrorException"/>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestBody"/>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.GetMapping"/>
@@ -30,7 +22,6 @@
     <fullyQualifiedTypeName name="com.example.demo.dto.NoteBasicDTO"/>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PostMapping"/>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PathVariable"/>
-    <fullyQualifiedTypeName name="org.springframework.stereotype.Service"/>
     <fullyQualifiedTypeName name="com.example.demo.service.imp.CategoryServiceImp"/>
     <fullyQualifiedTypeName name="com.example.demo.service.CategoryService"/>
     <fullyQualifiedTypeName name="com.example.demo.repository.CategoryRepository"/>
@@ -41,7 +32,6 @@
     <fullyQualifiedTypeName name="com.example.demo.mapper.CategoryMapper"/>
     <fullyQualifiedTypeName name="java.util.ArrayList"/>
     <fullyQualifiedTypeName name="com.example.demo.entity.CategoryEntity"/>
-    <fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
     <fullyQualifiedTypeName name="com.example.demo.dto.CategoryDTO"/>
     <fullyQualifiedTypeName name="lombok.Getter"/>
     <fullyQualifiedTypeName name="lombok.Setter"/>
@@ -49,15 +39,25 @@
     <fullyQualifiedTypeName name="org.springframework.http.HttpHeaders"/>
     <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="com.example.demo.exception.NonexistentCategory"/>
-    <fullyQualifiedTypeName name="com.example.demo.exception.ParamNotFound"/>
     <fullyQualifiedTypeName name="com.example.demo.exception.ErrorEnum"/>
-    <fullyQualifiedTypeName name="javax.validation.Valid"/>
     <fullyQualifiedTypeName name="com.example.demo.exeption.ParamNotFound"/>
     <fullyQualifiedTypeName name="com.example.demo.exception.IncorrectParam"/>
-    <fullyQualifiedTypeName name="java.lang.RuntimeException"/>
     <fullyQualifiedTypeName name="com.example.demo.exception.ArchiveException"/>
-    <fullyQualifiedTypeName name="com.example.demo.exception.ErrorEnums"/>
-    <fullyQualifiedTypeName name="com.example.demo.auth.entity.UserEntity"/>
     <fullyQualifiedTypeName name="com.example.demo.entity.UserExpampleEntity"/>
     <fullyQualifiedTypeName name="com.example.demo.repository.UserRepositoryExample"/>
+    <fullyQualifiedTypeName name="java.util.Optional"/>
+    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestHeader"/>
+    <fullyQualifiedTypeName name="org.springframework.stereotype.Service"/>
+    <fullyQualifiedTypeName name="com.example.demo.service.UserService"/>
+    <fullyQualifiedTypeName name="com.example.demo.auth.entity.UserEntity"/>
+    <fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
+    <fullyQualifiedTypeName name="com.example.demo.auth.repository.UserRepository"/>
+    <fullyQualifiedTypeName name="com.example.demo.exception.ParamNotFound"/>
+    <fullyQualifiedTypeName name="java.lang.RuntimeException"/>
+    <fullyQualifiedTypeName name="org.springframework.security.core.userdetails.UsernameNotFoundException"/>
+    <fullyQualifiedTypeName name="org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter"/>
+    <fullyQualifiedTypeName name="com.example.demo.exception.ErrorEnums"/>
+    <fullyQualifiedTypeName name="javax.validation.constraints.NotNull"/>
+    <fullyQualifiedTypeName name="javax.validation.Valid"/>
+    <fullyQualifiedTypeName name="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 </qualifiedTypeNameHistroy>

@@ -1,17 +1,16 @@
 package com.example.demo.mapper;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.example.demo.auth.repository.UserRepository;
 import com.example.demo.dto.CategoryDTO;
 import com.example.demo.dto.NoteBasicDTO;
 import com.example.demo.dto.NoteDTO;
 import com.example.demo.entity.NoteEntity;
-import com.example.demo.repository.UserRepository;
 import com.example.demo.service.NoteService;
 
 @Component
