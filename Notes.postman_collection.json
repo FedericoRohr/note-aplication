@@ -1,0 +1,402 @@
+{
+	"info": {
+		"_postman_id": "6531444a-59b3-43f5-af71-aaae53d055bb",
+		"name": "Notes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20677265"
+	},
+	"item": [
+		{
+			"name": "Notes",
+			"item": [
+				{
+					"name": "addNote",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyb2hyRmVkZUBnbWFpbC5jb20iLCJleHAiOjE2NTY1NTY5ODAsImlhdCI6MTY1NjUyMDk4MH0.rkiHBFewPE-fi-Zfwvh85g95xVlv1R_qKOFNX-qWw8o",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\":\"Ensolver Proyect\",\r\n    \"content\":\" A Postman Collection showing how to interact with the API\",\r\n    \"categories\":[{\"name\":\"information\"}, {\"name\":\"challenge\"}]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/notes/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"notes",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteNote",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyb2hyRmVkZUBnbWFpbC5jb20iLCJleHAiOjE2NTY1NTY5ODAsImlhdCI6MTY1NjUyMDk4MH0.rkiHBFewPE-fi-Zfwvh85g95xVlv1R_qKOFNX-qWw8o",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/notes/2/user/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"notes",
+								"2",
+								"user",
+								""
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateNote",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyb2hyRmVkZUBnbWFpbC5jb20iLCJleHAiOjE2NTY1NTY5ODAsImlhdCI6MTY1NjUyMDk4MH0.rkiHBFewPE-fi-Zfwvh85g95xVlv1R_qKOFNX-qWw8o",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\":\"update\",\r\n    \"content\":\"update2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/notes/14/user/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"notes",
+								"14",
+								"user",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "archiveNote",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyb2hyRmVkZUBnbWFpbC5jb20iLCJleHAiOjE2NTY1NTY5ODAsImlhdCI6MTY1NjUyMDk4MH0.rkiHBFewPE-fi-Zfwvh85g95xVlv1R_qKOFNX-qWw8o",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/notes/archive/14",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"notes",
+								"archive",
+								"14"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "unarchiveNote",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyb2hyRmVkZUBnbWFpbC5jb20iLCJleHAiOjE2NTY1NTY5ODAsImlhdCI6MTY1NjUyMDk4MH0.rkiHBFewPE-fi-Zfwvh85g95xVlv1R_qKOFNX-qWw8o",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/notes/unarchive/14",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"notes",
+								"unarchive",
+								"14"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyb2hyRmVkZUBnbWFpbC5jb20iLCJleHAiOjE2NTY1NTY5ODAsImlhdCI6MTY1NjUyMDk4MH0.rkiHBFewPE-fi-Zfwvh85g95xVlv1R_qKOFNX-qWw8o",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/notes/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"notes",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllArchive",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyb2hyRmVkZUBnbWFpbC5jb20iLCJleHAiOjE2NTY1NTY5ODAsImlhdCI6MTY1NjUyMDk4MH0.rkiHBFewPE-fi-Zfwvh85g95xVlv1R_qKOFNX-qWw8o",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/notes/user/archive",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"notes",
+								"user",
+								"archive"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addCategory",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyb2hyRmVkZUBnbWFpbC5jb20iLCJleHAiOjE2NTY1NTY5ODAsImlhdCI6MTY1NjUyMDk4MH0.rkiHBFewPE-fi-Zfwvh85g95xVlv1R_qKOFNX-qWw8o",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"postman information\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/notes/14/category",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"notes",
+								"14",
+								"category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteCategory",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyb2hyRmVkZUBnbWFpbC5jb20iLCJleHAiOjE2NTY1NTY5ODAsImlhdCI6MTY1NjUyMDk4MH0.rkiHBFewPE-fi-Zfwvh85g95xVlv1R_qKOFNX-qWw8o",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"information\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/notes/14/category",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"notes",
+								"14",
+								"category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getByCategory",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyb2hyRmVkZUBnbWFpbC5jb20iLCJleHAiOjE2NTY1NTY5ODAsImlhdCI6MTY1NjUyMDk4MH0.rkiHBFewPE-fi-Zfwvh85g95xVlv1R_qKOFNX-qWw8o",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"informatcion \"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/notes/category",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"notes",
+								"category"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"rohrfede@gmail.com\",\r\n    \"password\":\"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"rohrfede@gmail.com\",\r\n    \"password\":\"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
