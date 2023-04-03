@@ -1,8 +1,0 @@
-package com.example.demo.exception;
-
-public class NonexistentCategory extends RuntimeException {
-	public NonexistentCategory(String error) {
-		
-	}
-	
-}

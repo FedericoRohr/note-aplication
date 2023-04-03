@@ -1,9 +1,0 @@
-package com.example.demo.service;
-
-import com.example.demo.entity.CategoryEntity;
-
-public interface CategoryService {
-
-	public CategoryEntity exist(String name);
-
-}

@@ -1,9 +1,0 @@
-package com.example.demo.safe;
-
-import com.example.demo.dto.UserDTO;
-
-public interface UserService {
-
-	UserDTO save(UserDTO user);
-
-}
