@@ -4,6 +4,4 @@ public interface UserService {
 
 	Long getUserId(String auth);
 
-	void chekId(Long id, String auth);
-
 }

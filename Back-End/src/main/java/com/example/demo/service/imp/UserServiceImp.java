@@ -30,13 +30,7 @@ public class UserServiceImp implements UserService{
 		
 	}
 
-	@Override
-	public void chekId(Long id, String auth) {
-		if(id!=this.getUserId(auth))
-		{
-		throw new NamedParametersNotSupportedException(ErrorEnums.INCORRECTIDPARA.getMessage());
-	}
-	}
-	
-	
+
 }
+
+

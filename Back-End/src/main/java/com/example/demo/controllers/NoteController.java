@@ -26,10 +26,9 @@ public class NoteController {
 	
 	
     
-	@PostMapping("/user/{id}")
+	@PostMapping("/user")
 	public ResponseEntity<NoteDTO> save(@RequestBody NoteDTO dto, 
-			@RequestHeader(value="Authorization") String auth, @PathVariable Long id) {
-		userService.chekId(id,auth);
+			@RequestHeader(value="Authorization") String auth) {
 		Long userId =userService.getUserId(auth);
 		NoteDTO response = noteService.save(dto, userId);
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
